@@ -1,6 +1,7 @@
 @page {
-  size: 210mm 297mm;
+  size: A4 portrait;
 }
+
 #templates {
   max-width: 100%;
   padding-left: 10mm;
@@ -8,9 +9,8 @@
   overflow: hidden;
 }
 
-#templates .section--landscape {
+#templates [data-template*=LANDSCAPE] {
   width: calc(var(--page-height));
-  position: fixed;
 }
 
 #page-wrapper {
@@ -30,16 +30,8 @@
   position: relative;
   overflow: hidden;
 
-  /* this to avoid margin colloid */
-  /*border: 1px solid transparent;*/
-  /*box-sizing: border-box;*/
-}
-
-.page__content {
-  position: absolute;
-  top: 0;
-  left: 0;
-  /*box-sizing: border-box;*/
+  /*page-break-inside: avoid;*/
+  /*page-break-after: always;*/
 }
 
 .page--landscape {
@@ -47,16 +39,24 @@
   position: relative;
 }
 
-.page--landscape .page__content {
+.page__content {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) rotate(-90deg);
+}
+
+.page-wrapper--ready .page__content {
+  height: var(--page-height);
+  width: var(--page-width);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
 }
 
 .page-wrapper--ready .page--landscape .page__content {
-  min-height: var(--page-width);
-  box-sizing: border-box;
+  height: var(--page-width) !important;
+  top: 50%;
+  left: 50%;
+  transform-origin: center center;
+  transform: translate3d(-50%, -50%, 0) rotate(-90deg) !important;
 }
 
 .page-wrapper--ready #templates {

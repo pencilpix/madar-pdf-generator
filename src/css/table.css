@@ -66,3 +66,8 @@
   font-weight: var(--weight-semibold);
 }
 
+.bg-dark tr,
+.bg-dark td {
+  color: var(--text-lightest-color);
+}
+

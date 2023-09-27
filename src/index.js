@@ -30,15 +30,17 @@ if (isPreview) {
   const browser = await puppeteer.launch({
     headless: isPreview,
     slowMo: 250,
-    devtools: true,
+    devtools: !isPreview && !isProduction,
     timeout: 3000000, args: [
       '--start-maximized', // you can also use '--start-fullscreen'
+      '--disable-blink-features=LayoutNGPrinting',
       '--force-device-scale-factor=.8',
     ],
   });
+
   let pages = await browser.pages();
   while (pages.length < templates.length) {
-    const page = await browser.newPage();
+    await browser.newPage();
     pages = await browser.pages();
   }
   pages.map(async (page, i) => {
@@ -47,34 +49,33 @@ if (isPreview) {
     const data = templateConfig.data[0]?.body || '{}';
     const html = handlebarsTemplate(JSON.parse(data));
 
+
     // 210mm x 297mm
-    await page.setViewport({width: 794, height: 1123});
+    await page.setViewport({width: Math.floor(210 * 96/25.4), height: Math.floor(297 * 96/25.4)});
     const content = await page.setContent(html, {waitUntil: 'networkidle0'});
+    await page.waitForSelector('.page-wrapper--ready', {timeout: 10000});
     if (isPreview) {
       console.log(`====== Generate PDF Preview for: ${templateConfig.name}/${templateConfig.fileName} Started`);
       const itemPreviewDir = path.resolve(previewPath, templateConfig.name);
       if (!fs.existsSync(itemPreviewDir)) {
         fs.mkdirSync(itemPreviewDir);
       }
-      const pdf = await (new Promise((resolve) => {
-        setTimeout(() => {
-          resolve();
-        }, 10000);
-      }).then(async () => {
-        const htmlOutput = await page.evaluate(() => document.documentElement.outerHTML)
-        fs.writeFileSync(path.resolve(itemPreviewDir, `${templateConfig.fileName.split(/\.\w+$/)[0]}.html`), htmlOutput, 'utf8');
+      const pdf = await (async() => {
+        await page.waitForSelector('.page-wrapper--ready', {timeout: 10000});
         return await page.pdf({
           path: path.resolve(itemPreviewDir, `${templateConfig.fileName.split(/\.\w+$/)[0]}.pdf`),
-          format: 'A4',
+          format: 'a4',
           printBackground: true,
+          landscape: false,
+          preferCSSPageSize: true,
           margin: {
-            top: '0',
-            right: '0',
-            bottom: '0',
-            left: '0',
+            top: 0,
+            right: 0,
+            bottom: 0,
+            left: 0,
           }
         })
-      }));
+      })();
 
       console.log(`====== Generate PDF Preview for: ${templateConfig.name}/${templateConfig.fileName} Finished`);
       await browser.close();
