@@ -1,0 +1,530 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&family=Tajawal&display=swap" rel="stylesheet">
+  <title>Tax Invoice</title>
+
+  <meta name="test-data" src="./data/invoice-with-details.json" />
+  <link rel="stylesheet" href="../../css/settings.css" />
+  <link rel="stylesheet" href="../../css/reset.css" />
+  <link rel="stylesheet" href="../../css/labeled-info.css" />
+  <link rel="stylesheet" href="../../css/table.css" />
+  <link rel="stylesheet" href="../../css/style.css" />
+</head>
+<body>
+  <!--
+    Templates will be completely removed
+    once calculations over pages & heights is done
+
+    each template have the following data variables:
+    1. template itself has data-template: means it will be added as is no calculations.
+       **~~ Note: element with data-template will be removed from the DOM. ~~**
+
+    2. template child with data-template-child: 'HEADER'|'ROW'|'HEADER'|'BODY'. header, and footer
+       will be repeated if height is bigger than the height of the available space
+       in page. rows will be redistributed to fit the page.
+  -->
+  <div id="templates">
+    <header class="header section"  data-template="FIXED">
+      <div class="header__start">
+        <p>Tax Invoice</p>
+        <p class="rtl">فاتورة ضريبية</p>
+      </div>
+      <div class="header__middle">
+        <p>MSI-{{data.Year}}-{{data.invoiceNo}}</p>
+        <p>{{data.status}}</p>
+      </div>
+      <div class='header__end'>
+        <img alt="QR code" src='https://www.pngmart.com/files/10/Qr-Code-Transparent-PNG.png'/>
+      </div>
+    </header>
+
+    <!-- ===================================================
+    Invoice Dates Information
+    =====================================================-->
+    <section data-template="FIXED" class="section">
+      <div class="labeled-info">
+        <div class="labeled-info__item">
+          <div class="labeled-info__item-label">Invoice Date / <span class="rtl">تاريخ الفاتورة</span></div>
+          <div class="labeled-info__item-value small">{{prettifyDate data.invoiceDate}}</div>
+        </div>
+        <div class="labeled-info__item">
+          <div class="labeled-info__item-label">Invoice Date / <span class="rtl">تاريخ الفاتورة</span></div>
+          <div class="labeled-info__item-value small">{{data.dueDate}}</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================
+    Customer/Seller Information
+    =====================================================-->
+    <section data-template="FIXED" class="section">
+      <div class="labeled-info labeled-info--dark labeled-info--gap">
+        <div class="labeled-info__item">
+          <div class="labeled-info__item-label">Sold To / <span class="rtl">العميل</span></div>
+        </div>
+        <div class="labeled-info__item">
+          <div class="labeled-info__item-label">Seller / <span class="rtl">البائع</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section data-template="FIXED" class="section">
+      <div class="labeled-info labeled-info--gap">
+        <div class="labeled-info__item column">
+          <div class="labeled-info__item-value">
+            <span class="text-ellipsis-2">
+            {{data.customerNameEn}}
+            </span>
+          </div>
+          <div class="labeled-info__item-label">
+            {{#if data.customerId}}
+              <div>Customer code No. {{data.customerId}}</div>
+            {{else}}
+              <div>——</div>
+            {{/if}}
+
+            <div class="text-ellipsis-2 rtl">
+              {{data.customerNameAr}}
+            </div>
+            <div class="text-ellipsis-2">
+              {{data.customerAddress}}
+            </div>
+            <div>——</div>
+
+            {{#if data.customerCrNumber}}
+              <div class="flex"><span>VAT <span class="rtl">الرقم الضريبي</span>:</span> {{data.customerCrNumber}}</div>
+            {{else}}
+              <div class="flex"><span>VAT <span class="rtl">الرقم الضريبي</span>:</span> ——</div>
+            {{/if}}
+          </div>
+        </div>
+        <div class="labeled-info__item column">
+          <div class="labeled-info__item-value">
+            <span class="text-elipsis-2">
+              {{data.Name}}
+            </span>
+            <div>&nbsp;</div>
+          </div>
+          <div class="labeled-info__item-label">
+            <div>——</div>
+            <div class="text-ellipsis-2">{{data.Address}}</div>
+            <div class="text-ellipsis">{{data.City}}</div>
+            <div class="text-ellipsis">{{data.Country}}</div>
+            {{#if data.Vat}}
+              <div class="flex"><span>VAT <span class="rtl">الرقم الضريبي</span>:</span> {{data.Vat}}</div>
+            {{else}}
+              <div class="flex"><span>VAT <span class="rtl">الرقم الضريبي</span>:</span> ——</div>
+            {{/if}}
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ===================================================
+    Order Information
+    =====================================================-->
+    <section data-template="FIXED" class="section">
+      <hr class="separator separator--accent">
+      <table data-template-element="CONTAINER" class="table">
+        <thead data-template-element="HEADER">
+        <tr>
+          <th>
+            <div>Internal Ref#</div>
+            <div class="rtl">رقم طلب المبيعات</div>
+          </th>
+          <th>
+            <div>Shipment Period</div>
+            <div class="rtl">فترة الشحن</div>
+          </th>
+
+          <th>
+            <div>Shipment Type</div>
+            <div class="rtl">نوع الشحن</div>
+          </th>
+          <th>
+            <div>Payment Terms</div>
+            <div class="rtl">شروط الدفع</div>
+          </th>
+        </tr>
+        </thead>
+        <tbody data-template-element="BODY">
+        <tr>
+          <td>
+            <p>{{data.invoiceNo}}</p>
+          </td>
+          <td>
+            <p class="middle"><strong>From:</strong> {{prettifyDate data.firstDayOfShipments}} -
+              <strong>To:</strong> {{prettifyDate data.lastDayOfShipments}}</p>
+          </td>
+          <td>
+            <p>Local Shipments</p>
+          </td>
+          <td>
+            <p>{{data.dueDays}}</p>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </section>
+
+
+    <!-- ===================================================
+    Shipment Information
+    =====================================================-->
+    <section data-template="VARIABLE" class="section">
+      <hr class="separator separator--accent">
+      <table class="table table--first-cell" data-template-element="CONTAINER">
+        <thead data-template-element="HEADER">
+          <tr>
+            <th>
+              <div>S.N</div>
+              <div class="rtl">م</div>
+            </th>
+            <th>
+              <div>Item Description</div>
+              <div class="rtl">وصف السلعة</div>
+            </th>
+            <th>
+              <div>From</div>
+              <div class="rtl">من</div>
+            </th>
+            <th>
+              <div>To</div>
+              <div class="rtl">إلي</div>
+            </th>
+            <th>
+              <div>Unit</div>
+              <div class="rtl">الوحدة</div>
+            </th>
+            <th>
+              <div>QTY</div>
+              <div class="rtl">الكمية</div>
+            </th>
+            <th>
+              <div>Price</div>
+              <div class="rtl">السعر</div>
+            </th>
+          </tr>
+        </thead>
+        <tbody data-template-element="BODY">
+          {{#data.shipmentsSummary}}
+          <tr data-template-element="ROW">
+            <td>
+              <div>{{add @index 1}}</div>
+            </td>
+            <td style="text-align: left;">
+              {{#if ../data.customerType}}
+                <div>Transportation services</div>
+                <div class="rtl">خدمات نقل</div>
+              {{else}}
+                <div>T-Services_OOP</div>
+                <div class="rtl">خدمات الشاحنات</div>
+              {{/if}}
+            </td>
+            <td>
+              <div>
+                <div>{{fromCity}}</div>
+              </div>
+            </td>
+            <td>
+              <div>
+                <div>{{toCity}}</div>
+              </div>
+            </td>
+            <td>
+              {{#isEqual ../data.customerType 'SERVICE'}}
+                <div>Lot</div>
+              {{/isEqual}}
+              {{#isEqual ../data.customerType 'SAAS'}}
+                <div>Each</div>
+              {{/isEqual}}
+            </td>
+            <td>
+              <div>
+                <div>{{quantity}}</div>
+              </div>
+            </td>
+            <td>
+              <div>
+                <p>{{price}}</p>
+              </div>
+            </td>
+          </tr> {{/data.shipmentsSummary}}
+          <tr data-template-element="ROW">
+            <td>{{add data.shipmentsSummary.length 1}}</td>
+            <td style="text-align: left;">
+              <div>Waiting Charge</div>
+              <div class="rtl">رسوم الانتظار</div>
+            </td>
+            <td>-</td>
+            <td>-</td>
+            <td>Day</td>
+            <td>{{data.totalWaitingDays}}</td>
+            <td>{{data.totalWaitingCharge}}</td>
+          </tr>
+          <tr data-template-element="ROW">
+            <td>{{add data.shipmentsSummary.length 2}}</td>
+            <td style="text-align: left;">
+              <div>Return Charge</div>
+              <div class="rtl">رسوم العودة</div>
+            </td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>{{data.shipmentCounts.totalReturnChargeShipmentCount}}</td>
+            <td>{{data.totalReturnCharge}}</td>
+          </tr>
+          <tr data-template-element="ROW">
+            <td>{{add data.shipmentsSummary.length 3}}</td>
+            <td style="text-align: left;">
+              <div>Multi Destination</div>
+              <div class="rtl">وجهات متعددة</div>
+            </td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>{{data.shipmentCounts.totalMultiDestinationShipmentCount}}</td>
+            <td>{{data.totalMultiDestination}}</td>
+          </tr>
+          <tr data-template-element="ROW">
+            <td>{{add data.shipmentsSummary.length 4}}</td>
+            <td style="text-align: left;">
+              <div>Weighting Fine</div>
+              <div class="rtl">غرامة الوزن</div>
+            </td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>{{data.shipmentCounts.totalWeightingFineShipmentCount}}</td>
+            <td>{{data.totalWeightingFine}}</td>
+          </tr>
+          <tr data-template-element="ROW">
+            <td>{{add data.shipmentsSummary.length 5}}</td>
+            <td style="text-align: left;">
+              <div>Clearance Fees</div>
+              <div class="rtl">رسوم التخليص</div>
+            </td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>{{data.shipmentCounts.totalClearnessFeesShipmentCount}}</td>
+            <td>{{data.totalClearnessFees}}</td>
+          </tr>
+          <tr data-template-element="ROW" class="bg-dark text-light">
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td class="text-light">
+              <div>{{data.totalWithoutVAT}}</div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+
+    <!-- ===================================================
+    Summary Information
+    =====================================================-->
+    <section class="section" data-template="FIXED">
+      <hr class="separator separator--accent">
+      <table class="table table--2-cols table--box" data-template-element="CONTAINER">
+        <tbody data-template-element="BODY">
+        <tr data-template-element="ROW">
+          <td>
+            <div>Price &nbsp; <span class="rtl">السعر</span></div>
+          </td>
+          <td>
+            <div>{{data.totalPriceShipmentsWithAddonsWithoutVat}} SAR</div>
+          </td>
+        </tr>
+        <tr data-template-element="ROW">
+          <td>
+            <div class="flex"><span>Vat &nbsp;</span><span class="rtl"> ضريبية القيمة المضافة</span></div>
+          </td>
+          <td>
+            <div>{{data.vatPercentage}} %</div>
+          </td>
+        </tr>
+        <tr data-template-element="ROW">
+          <td>
+            <div class="flex"><span>Grand total &nbsp;</span> <span class="rtl">الإجمالي</span></div>
+          </td>
+          <td>
+            <div>{{data.grandTotal}} SAR</div>
+          </td>
+        </tr>
+        <tr data-template-element="ROW">
+          <td>
+            <div>Amount in words</div>
+          </td>
+          <td>
+            <div>{{data.IntegerEn}} {{data.FractionEn}}</div>
+          </td>
+        </tr>
+        <tr data-template-element="ROW">
+          <td>
+            <div class="rtl">المبلغ بالكلمات</div>
+          </td>
+          <td>
+            <div class="rtl">{{data.IntegerAr}} {{data.FractionAr}}</div>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </section>
+
+
+    <!-- ===================================================
+    comments Information
+    =====================================================-->
+    <section class="section" data-template="FIXED">
+      <table class="table table--transparent table--2-cols-equal" data-template-element="CONTAINER">
+        <tbody data-template-element="BODY">
+        <tr data-template-element="ROW">
+          <td>
+            <div class="flex">
+              <span>Due Date /</span>
+              <span class="rtl">تاريخ الاستحقاق:</span>
+            </div>
+          </td>
+          <td>
+            <p class="value">{{data.dueDate}}</p>
+          </td>
+          <td>
+            <div class="flex">
+              <span>Comments /</span>
+              <span class="rtl">ملاحظات:</span>
+            </div>
+          </td>
+          <td>
+            {{#if data.remarks}}
+            <div class="value text-ellipsis-2">{{data.remarks}}</div>
+            {{else}}
+            <div class="value">ــــ</div>
+            {{/if}}
+          </td>
+        </tr>
+        <tr data-template-element="ROW">
+          <td>
+            <div class="flex">
+              <span>Amount Due /</span>
+              <span class="rtl">المبلغ المستحق:</span>
+            </div>
+          </td>
+          <td>
+            <div>{{data.grandTotal}} SAR</div>
+          </td>
+          <td>
+            <div>Bank Info:</div>
+          </td>
+          <td>
+            <div class="value">BANK AL BILAD</div>
+            <div class="value">SA1315000441130713350008</div>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="section section--landscape" data-template="LANDSCAPE_VARIABLE">
+      <hr class="separator separator--accent">
+      <table data-template-element="CONTAINER" class="table">
+        <thead data-template-element="HEADER">
+          <tr>
+            <th>#</th>
+            <th>Madar ID</th>
+            <th>Date</th>
+            <th>DN</th>
+            <th>From</th>
+            <th>To</th>
+            <th>Truck No.</th>
+            <th>Price</th>
+            <th>
+              <p>Wait-</p>
+              <p>Days</p>
+            </th>
+            <th>
+              <p>Waiting</p>
+              <p>Charge</p>
+            </th>
+            <th>
+              <p>Return</p>
+              <p>Charge</p>
+            </th>
+            <th>
+              <p>Multi</p>
+              <p>Des.</p>
+            </th>
+            <th>
+              <p>Weigh</p>
+              <p>-fine</p>
+            </th>
+            <th>C-fee</th>
+            <th>Total</th>
+            <th>VAT</th>
+            <th>G-Total</th>
+          </tr>
+        </thead>
+        <tbody data-template-element="BODY">
+        {{#data.shipments}}
+          <tr data-template-element="ROW">
+            <td>{{add @index 1}}</td>
+            <td>{{id}}</td>
+            <td>{{prettifyDate shipmentCreatedAt}}</td>
+            <td>{{dn}}</td>
+            <td>{{from}}</td>
+            <td>{{to}}</td>
+            <td>{{truckNo}}</td>
+            <td>{{shipmentPrice}}</td>
+            <td>{{waitingDaysPerShipment}}</td>
+            <td>{{waitingChargePerShipment}}</td>
+            <td>{{returnChargePerShipment}}</td>
+            <td>{{multiDestinationPerShipment}}</td>
+            <td>{{weightingFinePerShipment}}</td>
+            <td>{{clearnessFeesPerShipment}}</td>
+            <td>{{totalPriceWithoutVatPerShipment}}</td>
+            <td>{{vatAmountPerShipment}}</td>
+            <td>{{totalPricePerShipment}}</td>
+          </tr>
+        {{/data.shipments}}
+        <tr data-template-element="ROW" class="bg-dark text-light">
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td class="text-light">{{data.totalShipmentsPrice}}</td>
+          <td class="text-light">{{data.totalWaitingDays}}</td>
+          <td class="text-light">{{data.totalWaitingCharge}}</td>
+          <td class="text-light">{{data.totalReturnCharge}}</td>
+          <td class="text-light">{{data.totalMultiDestination}}</td>
+          <td class="text-light">{{data.totalWeightingFine}}</td>
+          <td class="text-light">{{data.totalClearnessFees}}</td>
+          <td class="text-light">{{data.totalPriceWithoutVatPerShipment}}</td>
+          <td class="text-light">{{data.totalVatAmount}}</td>
+          <td class="text-light">{{data.grandTotal}}</td>
+        </tr>
+        </tbody>
+      </table>
+    </section>
+  </div>
+
+
+  <script src="../../js/logger.js"></script>
+  <script src="../../js/enums.js"></script>
+  <script src="../../js/template.js"></script>
+  <script src="../../js/main.js"></script>
+</body>
+</html>

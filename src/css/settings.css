@@ -1,0 +1,48 @@
+/**********************************************************/
+/* SETTINGS AND VARIABLES                                 */
+/**********************************************************/
+:root {
+  --page-height: 297mm;
+  --page-width: 210mm;
+  --px-per-mm: 3.7795275591;
+
+  --accent-color: #F16344;
+  --lightest-color: #ffffff;
+  --lighter-color: #E6E6E6;
+  --light-color: #D6D6D6;
+  --dark-color: #707070;
+  --darker-color: #414141;
+  --darkest-color: #000000;
+
+
+  --page-bg-url: url('https://madarv2devstorage.blob.core.windows.net/madar/images/1688896309657-Portrait%20BG.png');
+  --page-landscape-bg-url: url('https://madarv2devstorage.blob.core.windows.net/madar/images/1689679204006-Landscape%20BG.png');
+  --font: 'Poppins', sans-serif;
+  --font-rtl: 'Tajawal', sans-serif;
+
+  --font-size-xl: calc(1mm * 22 / var(--px-per-mm));
+  --line-height-xl: calc(1mm * 32 / var(--px-per-mm));
+
+  --font-size-lg: calc(1mm * 16 / var(--px-per-mm));
+  --line-height-lg: calc(1mm * 24 / var(--px-per-mm));
+
+  --font-size-md: calc(1mm * 14 / var(--px-per-mm));
+  --line-height-md: calc(1mm * 20 / var(--px-per-mm));
+
+  --font-size-sm: calc(1mm * 12 / var(--px-per-mm));
+  --line-height-sm: calc(1mm * 18 / var(--px-per-mm));
+
+  --weight-semibold: 600;
+
+  --border-color: var(--lighter-color);
+  --border-accent-color: var(--accent-color);
+  --border-dark-color: var(--light-color);
+
+  --bg-dark-color: var(--darker-color);
+  --bg-light-color: var(--lighter-color);
+
+  --text-dark-color: var(--dark-color);
+  --text-darker-color: var(--darker-color);
+  --text-darkest-color: var(--darkest-color);
+  --text-lightest-color: var(--lightest-color);
+}

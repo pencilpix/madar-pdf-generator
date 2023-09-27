@@ -1,0 +1,282 @@
+/*@page {*/
+/*  size: 21cm 29.7cm;*/
+/*}*/
+
+/* Start Global Rules */
+/*body {
+  background-image: url("https://madarv2devstorage.blob.core.windows.net/madar/images/1688896309657-Portrait%20BG.png");
+  background-size: 100% auto;
+  background-repeat: repeat;
+}*/
+
+.legacy .page {
+  position: relative;
+  overflow: hidden;
+  height: 297mm;
+  width: 210mm;
+  page-break-before: always;
+  background-image: url("https://madarv2devstorage.blob.core.windows.net/madar/images/1688896309657-Portrait%20BG.png");
+  background-size: 100% auto;
+  background-repeat: repeat;
+}
+
+.legacy .summary-page {
+  position: relative;
+  overflow: hidden;
+  height: 297mm;
+  width: 210mm;
+  margin-top: '3mm';
+  background-image: url("https://madarv2devstorage.blob.core.windows.net/madar/images/1689679204006-Landscape%20BG.png");
+  background-size: 100% auto;
+  background-repeat: repeat;
+}
+
+.legacy .content {
+  height: 210mm;
+  padding: 25mm 10mm 0mm;
+}
+
+.legacy .flex {
+  display: flex;
+  flex-direction: row;
+}
+
+.legacy .justify-space-between {
+  justify-content: space-between;
+}
+
+.legacy table,
+.legacy th,
+.legacy td {
+  border: 1px solid #EAEAEA;
+  border-collapse: collapse;
+}
+
+.legacy td.text-center,
+.legacy tr.text-center {
+  text-align: center;
+}
+
+.legacy .invoice-date-table,
+.legacy .sold-to-seller-table {
+  margin-top: 0.75rem;
+}
+
+.legacy .text-limit-width {
+  width: 300px;
+}
+
+.legacy .terms-table {
+  margin: 16px 0px;
+}
+
+.legacy th {
+  font-size: 14px;
+  font-weight: normal;
+}
+
+.legacy .comments-table {
+  margin: 16px 0px 0px;
+}
+
+.legacy p {
+  margin: 0px;
+}
+
+.legacy tr.no-border {
+  border: 0;
+}
+
+.legacy tr.no-border td {
+  border-left: 1px solid #EAEAEA;
+  border-right: 1px solid #EAEAEA;
+  border-top: 0;
+  border-bottom: 0;
+}
+
+.legacy .shipments-table th {
+  height: 14mm;
+  width: auto;
+}
+
+.legacy .shipments-table td {
+  height: 14mm;
+  white-space: nowrap;
+}
+
+.legacy .shipments-table td div {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.legacy .w-100 {
+  width: 100%;
+}
+
+.legacy table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.legacy td {
+  padding: 0.1rem 0.5rem;
+}
+
+.legacy .tables-list__header .start {
+  width: 100%;
+  padding-left: 12px;
+
+}
+
+.legacy .tables-list__header .start p {
+  color: #414141;
+  font: normal normal 600 22px/33px Poppins;
+  margin: 0;
+}
+
+.legacy .tables-list__header .middle {
+  color: #707070;
+  text-align: center;
+  font: normal normal 600 16px/25px Poppins;
+  margin: 0.75rem 0 0;
+  width: 100%;
+}
+
+.legacy .tables-list__header .end {
+  width: 100%;
+  text-align: right;
+}
+
+.legacy .tables-list__header .end img {
+  height: 80px;
+  width: auto;
+  object-fit: contain;
+}
+
+.legacy .invoice-date-table td {
+  width: 50%;
+  padding: 0;
+  background-color: #FAFAFA;
+  padding: 0.5rem;
+}
+
+.legacy .invoice-date-table .label {
+  margin: 0;
+  font: normal normal normal 14px/21px Poppins;
+  color: #707070;
+}
+
+.legacy .invoice-date-table .value {
+  margin: 0;
+  font: normal normal 600 12px/18px Poppins;
+  color: #000000;
+}
+
+.legacy .sold-to-seller-table p {
+  margin: 0;
+  font: normal normal 600 16px/25px Poppins;
+  color: white;
+}
+
+.legacy .from-to-table,
+.total-amount-table {
+  margin-top: 0.4rem;
+  border: 0;
+}
+
+.legacy .from-to-table p {
+  font: normal normal normal 14px/21px Poppins;
+}
+
+.legacy .order-number-table,
+.shipments-table {
+  border-top: 1px solid #f16344;
+  padding-top: 0.2rem;
+}
+
+.legacy .order-number-table th {
+  text-align: start;
+  padding: 0.5rem;
+}
+
+.legacy .shipments-table {
+  margin-top: 0.5rem;
+}
+
+.legacy .order-number-table td,
+.shipments-table td,
+.summary-table td {
+  padding: 0.5rem;
+  font: normal normal normal 12px/18px Poppins;
+  color: #414141;
+}
+
+.legacy .order-number-table th,
+.shipments-table th,
+.summary-table th {
+  background-color: #E6E6E6;
+  font: normal normal normal 12px/18px Poppins;
+  color: #000000;
+}
+
+.legacy .shipments-table th,
+.legacy .shipments-table td {
+  text-align: center;
+}
+
+.legacy .shipments-table tr:nth-child(even),
+.legacy .summary-table tr:nth-child(even) {
+  background-color: #F8F8F8;
+}
+
+.legacy .total-amount-table p {
+  font: normal normal 600 14px/21px Poppins;
+  color: #414141;
+}
+
+.legacy .comments-table td,
+.legacy .comments-table tr {
+  border: 0;
+}
+
+.legacy .comments-table .label {
+  color: #707070;
+  font: normal normal normal 14px/21px Poppins;
+}
+
+.legacy .comments-table .value {
+  color: #000000;
+  font: normal normal 600 12px/18px Poppins;
+}
+
+.legacy .summary-table th {
+  height: 10mm;
+  text-align: left;
+  width: auto;
+}
+
+.legacy .summary-table td {
+  height: 10mm;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.legacy .summary-table table {
+  border-collapse: collapse;
+  transform: rotate(270deg);
+  width: 260mm;
+  max-height: 155mm;
+  position: absolute;
+}
+
+.legacy .delivery-image img {
+  height: 155mm;
+  width: auto;
+  object-fit: contain;
+}
+
+.legacy {
+  display: none !important;
+}

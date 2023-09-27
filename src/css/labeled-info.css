@@ -1,0 +1,52 @@
+/**********************************************************/
+/* LABELED INFO                                          */
+/**********************************************************/
+.labeled-info {
+  display: flex;
+  justify-content: space-between;
+  gap: calc(1mm * 1 / var(--px-per-mm)); /* 1px in mm */
+}
+
+.labeled-info__item {
+  display: flex;
+  justify-content: space-between;
+  flex: 1 1 50%;
+  width: 50%;
+  border: calc(1mm * 1 / var(--px-per-mm)) solid var(--border-color);
+  line-height: var(--line-height-md);
+  font-size: var(--font-size-md);
+  padding: calc(1mm * 10 / var(--px-per-mm)); /* 10px in mm */
+  box-sizing: border-box;
+  height: calc(1mm * 40 / var(--px-per-mm)); /* 40px in mm */
+  color: var(--text-dark-color);
+}
+
+.labeled-info__item.column {
+  flex-direction: column;
+  height: auto;
+  min-height: 100%;
+}
+
+.labeled-info__item-value {
+  font-weight: var(--weight-semibold);
+  color: var(--text-darkest-color);
+}
+
+.column .labeled-info__item-label {
+  height: auto;
+  flex: 1 1 auto;
+}
+
+
+.labeled-info__item-value.small {
+  font-size: var(--font-size-sm);
+}
+
+.labeled-info--gap {
+  gap: calc(1mm * 10 / var(--px-per-mm)); /* 1px in mm */
+}
+.labeled-info--dark .labeled-info__item {
+  background-color: var(--bg-dark-color);
+  color: var(--text-lightest-color);
+}
+/**********************************************************/
