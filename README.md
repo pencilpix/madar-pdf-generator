@@ -113,3 +113,32 @@ content will not be divided at all
     <!-- rest of templates -->
 </section>
 ```
+
+#### Build
+```bash
+npm run build
+```
+
+build will generate for each template a file `.hbs` in dist folder
+which can be used in BE to generate pdf
+
+
+#### Run
+```bash
+npm run start
+```
+will run puppeteer with GUI to preview output
+
+### Run Preview
+```bash
+npm run start:preview
+npm run start:preview:watch
+```
+
+will create a pdf for each template in preview folder
+using headless mode.
+
+
+### NOTE: template should be placed in `src/templates` folder
+each template should have folder with name data contain test json
+and file.hbs at least
