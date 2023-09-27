@@ -21,7 +21,7 @@
     }
 
     static insert(element, message, prefix) {
-      const fullMessage = `========[LOG]: ${prefix}========\n${message}\n========[END LOG]: ${prefix}========`;
+      const fullMessage = `========[LOG]: ${prefix}========\n${message}\n========[END LOG]: ${prefix}========\n`;
       console.log(fullMessage)
       element.appendChild(document.createComment(fullMessage));
     }

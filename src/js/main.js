@@ -3,7 +3,7 @@
 
   class App {
     wrapper;
-    pxPerMm = 3.7795275591;
+    pxPerMm = 96 / 25.4;
     pageHeight = 297 * this.pxPerMm; // A4 height 297mm
     pageWidth = 210 * this.pxPerMm; // A4 width 210mm
     pageBleed = 10 * this.pxPerMm; // 1cm edge bleeding
@@ -24,24 +24,28 @@
     }
 
     init() {
-      const templates = Template.prepareTemplatesFromDom();
-      const elements = templates.reduce((pageList, template) => {
-        let pages = pageList.length ? pageList : [this.createPage(template.type === TemplateTypes.LandscapeVariable)];
-        let lastPage = pages[pages.length - 1];
-        if (template.fitAvailableHeight(lastPage.pageContent, this.pageHeight)) {
-          lastPage.pageContent.appendChild(template.templateElement);
-        } else if (template.type !== TemplateTypes.Fixed) {
-          pages = this.recursiveSliceTemplate(pages, template);
-        } else {
-          pages = [...pages, this.createPage()];
-          pages[pages.length - 1].pageContent.appendChild(template.templateElement);
-          console.warn(`
-          This template may be rendered in two pages. if so, please consider
-          use tables with template type VARIABLE or LANDSCAPE_VARIABLE
-          `)
-        }
-        return pages;
-      }, []);
+      try {
+        const templates = Template.prepareTemplatesFromDom();
+        const elements = templates.reduce((pageList, template) => {
+          let pages = pageList.length ? pageList : [this.createPage(template.type === TemplateTypes.LandscapeVariable)];
+          let lastPage = pages[pages.length - 1];
+          if (template.fitAvailableHeight(lastPage.pageContent, this.pageHeight)) {
+            lastPage.pageContent.appendChild(template.templateElement);
+          } else if (template.type !== TemplateTypes.Fixed) {
+            pages = this.recursiveSliceTemplate(pages, template);
+          } else {
+            pages = [...pages, this.createPage()];
+            pages[pages.length - 1].pageContent.appendChild(template.templateElement);
+            console.warn(`
+            This template may be rendered in two pages. if so, please consider
+            use tables with template type VARIABLE or LANDSCAPE_VARIABLE
+            `)
+          }
+          return pages;
+        }, []);
+      } catch (e) {
+        console.error(e);
+      }
       this.wrapper.className = 'page-wrapper--ready';
     }
 
@@ -78,7 +82,7 @@
         element.style.width = `${this.pageHeight}px`;
         element.style.maxHeight = `${this.pageWidth}px`;
       } else {
-        element.style.width = `${this.pageWidth - (this.pageBleed * 2)}px`;
+        element.style.width = `${this.pageWidth}px`;
         element.style.maxHeight = `${this.pageHeight - (top + bottom)}px`;
       }
 
@@ -133,7 +137,10 @@
       const pageHeight = isTemplateLandScape ? this.pageWidth : this.pageHeight;
       const requiredHeight = pageHeight - lastPage.pageContent.offsetHeight;
       const slicedTemplate = template.slice(Math.floor(requiredHeight));
-      lastPage.pageContent.appendChild(slicedTemplate.templateElement);
+      if (slicedTemplate.hasRows) {
+        lastPage.pageContent.appendChild(slicedTemplate.templateElement);
+      }
+
       if (template.hasRows) {
         return this.recursiveSliceTemplate([...pages, this.createPage(template.type === TemplateTypes.LandscapeVariable)], template);
       }

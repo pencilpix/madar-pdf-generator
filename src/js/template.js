@@ -7,6 +7,7 @@
     header;
     footer;
     container;
+
     get hasRows() {
       return !!this.rows?.length;
     }
@@ -30,38 +31,33 @@
      * @returns {Template}
      */
     slice(maxHeight) {
+      const isLandscape = this.type === TemplateTypes.LandscapeVariable;
       const newTemplate = this.templateElement.cloneNode(true);
       const newTemplateBody = this.getTemplateItem(newTemplate, TemplateItemTypes.Body);
       const heightDetails = this.getAllElementsHeights();
-      let totalHeight = heightDetails.emptyTemplateHeight;
-      const expectedHeight = Math.floor((maxHeight - totalHeight) / heightDetails.rowHeight);
+      const totalHeight = heightDetails.emptyTemplateHeight + (isLandscape ? heightDetails.headerHeight : 0);
+      const numberOfRows = Math.floor((maxHeight - totalHeight) / heightDetails.rowHeight);
 
-      Logger.log(newTemplate, `{
+      Logger.log(newTemplate, `\n{
+        headerHeight: ${heightDetails.headerHeight},
         maxHeight: ${maxHeight},
         totalHeight: ${totalHeight},
-        expectedHeight: ${expectedHeight},
         rowHeight: ${heightDetails.rowHeight},
-
-      }`);
+        numberOfRows: ${numberOfRows},
+      }\n`);
 
       newTemplateBody.innerHTML = '';
 
       if (this.type === TemplateTypes.LandscapeVariable) {
-        console.log(totalHeight, maxHeight, heightDetails.rowHeight);
+        newTemplateBody.innerHTML = this.header.outerHTML;
+        // newTemplateBody.append(this.header.clone(true));
       }
-
-      while(totalHeight + heightDetails.rowHeight <= maxHeight) {
-        const row = this.rows.shift();
-        if (!row) {
-          break;
-        }
-        totalHeight = totalHeight + heightDetails.rowHeight;
-        newTemplateBody.appendChild(row);
-      }
+      newTemplateBody.append(...this.rows.slice(0, numberOfRows));
+      this.rows = this.rows.slice(numberOfRows);
 
       const template = new Template(newTemplate, this.type);
       this.body.innerHTML = '';
-      this.rows.forEach(row => this.body.appendChild(row));
+      this.body.append(...this.rows);
       return template;
     }
 
@@ -96,7 +92,18 @@
         if (!this.rows.length) {
           console.warn(`This template needs to have rows in order to calculate rows per height`)
           console.log(this);
-          throw new Error('Template needs to have rows');
+        }
+      }
+
+      if (this.type === TemplateTypes.LandscapeVariable) {
+        if (this.header && this.header.parentNode) {
+          const height = this.header.offsetHeight;
+          const row = this.header.querySelector('tr').cloneNode(true);
+          this.header.parentNode.removeChild(this.header);
+          this.header = row;
+          this.header.className = 'table__header';
+          this.header.style.height = `${height}px`;
+          this.header.dataset.height = height;
         }
       }
     }
@@ -117,7 +124,12 @@
     getAllElementsHeights() {
       const rowHeight = Math.max(...this.rows.map(row => row.offsetHeight));
       const bodyHeight = (parseInt(this.body.style.paddingTop, 10) + parseInt(this.body.style.paddingBottom, 10)) || 0;
-      const headerHeight = this.header?.offsetHeight || 0;
+      const headerHeight = +(this.type === TemplateTypes.LandscapeVariable
+          ? this.header?.dataset.height
+          : (this.header?.offsetHeight || 0));
+      if (this.type === TemplateTypes.LandscapeVariable) {
+        console.log(this.header, headerHeight);
+      }
       const footerHeight = this.footer?.offsetHeight || 0;
       this.body.style.display = 'none';
       const emptyTemplateHeight = this.templateElement.offsetHeight;
