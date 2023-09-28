@@ -43,7 +43,7 @@ if (isPreview) {
     await browser.newPage();
     pages = await browser.pages();
   }
-  pages.map(async (page, i) => {
+  await Promise.all(pages.map(async (page, i) => {
     const templateConfig = templates[i];
     const handlebarsTemplate = Handlebars.compile(templateConfig.template);
     const data = templateConfig.data[0]?.body || '{}';
@@ -78,8 +78,13 @@ if (isPreview) {
       })();
 
       console.log(`====== Generate PDF Preview for: ${templateConfig.name}/${templateConfig.fileName} Finished`);
-      await browser.close();
+      return pdf;
     }
-  })
+    return Promise.resolve();
+  }))
+
+  if (isPreview) {
+    await browser.close();
+  }
 })();
 
