@@ -29,7 +29,7 @@
         const elements = templates.reduce((pageList, template) => {
           let pages = pageList.length ? pageList : [this.createPage(template.type === TemplateTypes.LandscapeVariable)];
           let lastPage = pages[pages.length - 1];
-          if (template.fitAvailableHeight(lastPage.pageContent, this.pageHeight)) {
+          if (template.fitAvailableHeight(lastPage.pageContent, this.pageHeight) && template.type === TemplateTypes.Fixed){
             lastPage.pageContent.appendChild(template.templateElement);
           } else if (template.type !== TemplateTypes.Fixed) {
             pages = this.recursiveSliceTemplate(pages, template);
