@@ -10,7 +10,7 @@
 }
 
 #templates [data-template*=LANDSCAPE] {
-  width: calc(var(--page-height));
+  width: calc(var(--page-height) - 20mm);
 }
 
 #page-wrapper {

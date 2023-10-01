@@ -133,10 +133,10 @@
         );
       }
 
-      const { top, bottom } = isTemplateLandScape ? this.pageLandscapeBleeding : this.pagePortraitBleeding;
       const pageHeight = isTemplateLandScape ? this.pageWidth : this.pageHeight;
       const requiredHeight = pageHeight - lastPage.pageContent.offsetHeight;
       const slicedTemplate = template.slice(Math.floor(requiredHeight));
+
       if (slicedTemplate.hasRows) {
         lastPage.pageContent.appendChild(slicedTemplate.templateElement);
       }
@@ -151,7 +151,7 @@
 
   window.__App = App;
   window.invoiceApp = new App();
-  window.addEventListener('DOMContentLoaded', () => {
+  window.addEventListener('load', () => {
     invoiceApp.init();
   });
 })(window, document);

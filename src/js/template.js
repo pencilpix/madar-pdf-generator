@@ -7,6 +7,7 @@
     header;
     footer;
     container;
+    heights;
 
     get hasRows() {
       return !!this.rows?.length;
@@ -17,11 +18,21 @@
      * which will be divided into more thant page or not.
      * @param template {HTMLElement}
      * @param type {TemplateTypes}
+     * @param initialHeights {object}
      */
-    constructor(template, type) {
+    constructor(template, type, initialHeights = null) {
       this.templateElement = template;
       this.type = type;
+      this.heights = initialHeights;
       this.prepareTemplate();
+
+      if (this.type !== TemplateTypes.Fixed) {
+        Logger.log(this.templateElement, `
+        parent: ${this.templateElement.parentNode?.getAttribute('id')}
+        after template is created: [${this.type}]
+        ${JSON.stringify(this.getAllElementsHeights(), null ,2)}
+        `)
+      }
     }
 
     /**
@@ -31,31 +42,21 @@
      * @returns {Template}
      */
     slice(maxHeight) {
-      const isLandscape = this.type === TemplateTypes.LandscapeVariable;
       const newTemplate = this.templateElement.cloneNode(true);
       const newTemplateBody = this.getTemplateItem(newTemplate, TemplateItemTypes.Body);
-      const heightDetails = this.getAllElementsHeights();
-      const totalHeight = heightDetails.emptyTemplateHeight + (isLandscape ? heightDetails.headerHeight : 0);
-      const numberOfRows = Math.floor((maxHeight - totalHeight) / heightDetails.rowHeight);
+      const numberOfRows = Math.floor((maxHeight - this.heights.withoutRows) / this.heights.row);
 
-      Logger.log(newTemplate, `\n{
-        headerHeight: ${heightDetails.headerHeight},
-        maxHeight: ${maxHeight},
-        totalHeight: ${totalHeight},
-        rowHeight: ${heightDetails.rowHeight},
-        numberOfRows: ${numberOfRows},
-      }\n`);
+      Logger.log(newTemplate, `\nNumber of rows: ${numberOfRows}\n${JSON.stringify(this.heights)}\n`);
 
       newTemplateBody.innerHTML = '';
 
       if (this.type === TemplateTypes.LandscapeVariable) {
         newTemplateBody.innerHTML = this.header.outerHTML;
-        // newTemplateBody.append(this.header.clone(true));
       }
       newTemplateBody.append(...this.rows.slice(0, numberOfRows));
       this.rows = this.rows.slice(numberOfRows);
 
-      const template = new Template(newTemplate, this.type);
+      const template = new Template(newTemplate, this.type, this.heights);
       this.body.innerHTML = '';
       this.body.append(...this.rows);
       return template;
@@ -81,10 +82,9 @@
      * to related instance property
      * that will be used while rendering in different scenarios
      */
-    prepareTemplate() {
+    prepareTemplate(initialHeights = null) {
       this.body = this.getTemplateItem(this.templateElement, TemplateItemTypes.Body);
       this.header = this.getTemplateItem(this.templateElement, TemplateItemTypes.Header);
-      this.body = this.getTemplateItem(this.templateElement, TemplateItemTypes.Body);
       this.footer = this.getTemplateItem(this.templateElement, TemplateItemTypes.Footer);
       this.container = this.getTemplateItem(this.templateElement, TemplateItemTypes.Container);
       if (this.type !== TemplateTypes.Fixed) {
@@ -95,15 +95,19 @@
         }
       }
 
+      if (!this.heights) {
+        this.heights = this.getAllElementsHeights();
+      }
+
       if (this.type === TemplateTypes.LandscapeVariable) {
         if (this.header && this.header.parentNode) {
-          const height = this.header.offsetHeight;
-          const row = this.header.querySelector('tr').cloneNode(true);
-          this.header.parentNode.removeChild(this.header);
-          this.header = row;
-          this.header.className = 'table__header';
-          this.header.style.height = `${height}px`;
-          this.header.dataset.height = height;
+          Promise.resolve().then(() => {
+            const row = this.header.querySelector('tr').cloneNode(true);
+            this.header.parentNode.removeChild(this.header);
+            this.header = row;
+            this.header.className = 'table__header';
+          });
+
         }
       }
     }
@@ -122,24 +126,21 @@
     }
 
     getAllElementsHeights() {
-      const rowHeight = Math.max(...this.rows.map(row => row.offsetHeight));
-      const bodyHeight = (parseInt(this.body.style.paddingTop, 10) + parseInt(this.body.style.paddingBottom, 10)) || 0;
-      const headerHeight = +(this.type === TemplateTypes.LandscapeVariable
-          ? this.header?.dataset.height
-          : (this.header?.offsetHeight || 0));
-      if (this.type === TemplateTypes.LandscapeVariable) {
-        console.log(this.header, headerHeight);
-      }
-      const footerHeight = this.footer?.offsetHeight || 0;
-      this.body.style.display = 'none';
-      const emptyTemplateHeight = this.templateElement.offsetHeight;
-      this.body.style.display = '';
+
       return {
-        rowHeight,
-        bodyHeight,
-        headerHeight,
-        footerHeight,
-        emptyTemplateHeight,
+        row: this.rows?.length ? Math.max(...this.rows.map(row => row.offsetHeight)) : 0,
+        body: this.body?.offsetHeight || 0,
+        header: this.header?.offsetHeight || 0,
+        footer: this.footer?.offsetHeight || 0,
+        container: this.container?.offsetHeight || 0,
+        withoutRows: (() => {
+          const el = this.body || this.container;
+          let height = 0;
+          if (el) el.style.display = 'none';
+          height = this.templateElement.offsetHeight || 0;
+          if (el) el.style.display = '';
+          return height;
+        })(),
       }
     }
 
@@ -148,11 +149,14 @@
      * @returns {Template[]}
      */
     static prepareTemplatesFromDom() {
+      const types = Object.values(TemplateTypes);
       const templates = document.querySelectorAll('[data-template]');
       return [].map.call(templates, (template) => {
         const type = template.dataset.template;
-        return new Template(template, type);
-      });
+        if (types.includes(type)) {
+          return new Template(template, type);
+        }
+      }).filter(template => template);
     }
   }
 
