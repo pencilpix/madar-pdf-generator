@@ -260,6 +260,7 @@
                         </div>
                     </td>
                 </tr> {{/data.shipmentsSummary}}
+            {{#if data.totalWaitingCharge}}
             <tr data-template-element="ROW">
                 <td>{{add data.shipmentsSummary.length 1}}</td>
                 <td style="text-align: left;">
@@ -272,6 +273,9 @@
                 <td>{{data.totalWaitingDays}}</td>
                 <td>{{data.totalWaitingCharge}}</td>
             </tr>
+            {{/if}}
+
+            {{#if data.totalReturnCharge}}
             <tr data-template-element="ROW">
                 <td>{{add data.shipmentsSummary.length 2}}</td>
                 <td style="text-align: left;">
@@ -284,6 +288,9 @@
                 <td>{{data.shipmentCounts.totalReturnChargeShipmentCount}}</td>
                 <td>{{data.totalReturnCharge}}</td>
             </tr>
+            {{/if}}
+
+            {{#if data.totalMultiDestination}}
             <tr data-template-element="ROW">
                 <td>{{add data.shipmentsSummary.length 3}}</td>
                 <td style="text-align: left;">
@@ -296,6 +303,9 @@
                 <td>{{data.shipmentCounts.totalMultiDestinationShipmentCount}}</td>
                 <td>{{data.totalMultiDestination}}</td>
             </tr>
+            {{/if}}
+
+            {{#if data.totalWeightingFine}}
             <tr data-template-element="ROW">
                 <td>{{add data.shipmentsSummary.length 4}}</td>
                 <td style="text-align: left;">
@@ -308,6 +318,9 @@
                 <td>{{data.shipmentCounts.totalWeightingFineShipmentCount}}</td>
                 <td>{{data.totalWeightingFine}}</td>
             </tr>
+            {{/if}}
+
+            {{#if data.totalClearnessFees}}
             <tr data-template-element="ROW">
                 <td>{{add data.shipmentsSummary.length 5}}</td>
                 <td style="text-align: left;">
@@ -320,6 +333,7 @@
                 <td>{{data.shipmentCounts.totalClearnessFeesShipmentCount}}</td>
                 <td>{{data.totalClearnessFees}}</td>
             </tr>
+            {{/if}}
             <tr data-template-element="ROW" class="bg-dark text-light">
                 <td></td>
                 <td></td>
