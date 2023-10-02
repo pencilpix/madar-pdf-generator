@@ -30,13 +30,15 @@ module.exports = {
     const directoriesWithTemplates = TemplateReader.getTemplates();
     const isProduction = process.env.NODE_ENV === 'production';
     const templates = [];
+    if (isProduction) {
+      fs.rmSync(this.buildDir, {recursive: true, force: true});
+      fs.mkdirSync(this.buildDir);
+    }
     directoriesWithTemplates.forEach((directory) => {
       console.log(`====== Building templates of dir: ${directory.name}`);
       directory.templates.forEach((templateConfig) => {
         templateConfig.template = this.buildTemplate(templateConfig);
         if (isProduction) {
-          fs.rmSync(this.buildDir, {recursive: true, force: true});
-          fs.mkdirSync(this.buildDir);
           this.save(templateConfig);
         }
         templates.push(templateConfig);
