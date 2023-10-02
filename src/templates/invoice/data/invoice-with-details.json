@@ -1,6 +1,7 @@
 {
   "data": {
     "exportWithSummary": true,
+    "isExportInvoice": true,
     "shipmentCounts": {
       "totalWeightingFineShipmentCount": 0,
       "totalMultiDestinationShipmentCount": 0,
