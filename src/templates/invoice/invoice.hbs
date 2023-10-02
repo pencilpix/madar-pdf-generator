@@ -34,7 +34,7 @@
 <div id="templates">
     <header class="header section" data-template="FIXED">
         <div class="header__start">
-          {{#unless data.isExportInvoice}}
+          {{#unless data.hideVat}}
             <p>Tax Invoice</p>
             <p class="rtl">فاتورة ضريبية</p>
           {{/unless}}
@@ -100,7 +100,7 @@
                         {{data.customerAddress}}
                     </div>
                     <div>——</div>
-                    {{#unless data.isExportInvoice}}
+                    {{#unless data.hideVat}}
                     {{#if data.customerCrNumber}}
                         <div class="flex"><span>VAT <span
                                 class="rtl">الرقم الضريبي</span>:</span> {{data.customerCrNumber}}</div>
@@ -122,7 +122,7 @@
                     <div class="text-ellipsis-2">{{data.Address}}</div>
                     <div class="text-ellipsis">{{data.City}}</div>
                     <div class="text-ellipsis">{{data.Country}}</div>
-                    {{#unless data.isExportInvoice}}
+                    {{#unless data.hideVat}}
                       {{#if data.Vat}}
                           <div class="flex"><span>VAT <span class="rtl">الرقم الضريبي</span>:</span> {{data.Vat}}</div>
                       {{else}}
@@ -370,22 +370,23 @@
                 <td>
                     <div>Price &nbsp; <span class="rtl">السعر</span></div>
                 </td>
-                {{#unless data.isExportInvoice}}
+                {{#unless data.hideVat}}
                 <td>
                     <div>{{data.totalPriceShipmentsWithAddonsWithoutVat}} SAR</div>
                 </td>
                 {{/unless}}
             </tr>
+            {{#unless data.hideVat}}
             <tr data-template-element="ROW">
                 <td>
                     <div class="flex"><span>Vat &nbsp;</span><span class="rtl"> ضريبية القيمة المضافة</span></div>
                 </td>
-                {{#unless data.isExportInvoice}}
                 <td>
                     <div>{{data.vatPercentage}} %</div>
                 </td>
-                {{/unless}}
             </tr>
+            {{/unless}}
+
             <tr data-template-element="ROW">
                 <td>
                     <div class="flex"><span>Grand total &nbsp;</span> <span class="rtl">الإجمالي</span></div>
@@ -506,7 +507,7 @@
                 </th>
                 <th>C-fee</th>
                 <th>Total</th>
-                {{#unless data.isExportInvoice}}
+                {{#unless data.hideVat}}
                   <th>VAT</th>
                   <th>G-Total</th>
                 {{/unless}}
@@ -530,7 +531,7 @@
                     <td>{{weightingFinePerShipment}}</td>
                     <td>{{clearnessFeesPerShipment}}</td>
                     <td>{{totalPriceWithoutVatPerShipment}}</td>
-                    {{#unless data.isExportInvoice}}
+                    {{#unless ../data.hideVat}}
                       <td>{{vatAmountPerShipment}}</td>
                       <td>{{totalPricePerShipment}}</td>
                     {{/unless}}
@@ -552,7 +553,7 @@
                 <td class="text-light">{{data.totalWeightingFine}}</td>
                 <td class="text-light">{{data.totalClearnessFees}}</td>
                 <td class="text-light">{{data.totalPriceWithoutVatPerShipment}}</td>
-                {{#unless data.isExportInvoice}}
+                {{#unless data.hideVat}}
                   <td class="text-light">{{data.totalVatAmount}}</td>
                   <td class="text-light">{{data.grandTotal}}</td>
                 {{/unless}}

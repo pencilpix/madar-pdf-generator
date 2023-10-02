@@ -1,6 +1,7 @@
 {
   "data": {
     "exportWithSummary": true,
+    "hideVat": true,
     "isExportInvoice": true,
     "shipmentCounts": {
       "totalWeightingFineShipmentCount": 0,
