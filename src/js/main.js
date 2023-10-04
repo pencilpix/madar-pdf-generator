@@ -151,7 +151,7 @@
 
   window.__App = App;
   window.invoiceApp = new App();
-  window.addEventListener('load', () => {
+  window.addEventListener('DOMContentLoaded', () => {
     invoiceApp.init();
   });
 })(window, document);
