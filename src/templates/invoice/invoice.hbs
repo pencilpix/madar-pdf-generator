@@ -505,7 +505,9 @@
                     <p>Weigh</p>
                     <p>-fine</p>
                 </th>
-                <th>C-fee</th>
+                {{#if data.isExportInvoice}}
+                  <th>C-fee</th>
+                {{/if}}
                 <th>Total</th>
                 {{#unless data.hideVat}}
                   <th>VAT</th>
@@ -529,7 +531,9 @@
                     <td>{{returnChargePerShipment}}</td>
                     <td>{{multiDestinationPerShipment}}</td>
                     <td>{{weightingFinePerShipment}}</td>
-                    <td>{{clearnessFeesPerShipment}}</td>
+                    {{#if ../data.isExportInvoice}}
+                      <td>{{clearnessFeesPerShipment}}</td>
+                    {{/if}}
                     <td>{{totalPriceWithoutVatPerShipment}}</td>
                     {{#unless ../data.hideVat}}
                       <td>{{vatAmountPerShipment}}</td>
@@ -551,7 +555,9 @@
                 <td class="text-light">{{data.totalReturnCharge}}</td>
                 <td class="text-light">{{data.totalMultiDestination}}</td>
                 <td class="text-light">{{data.totalWeightingFine}}</td>
-                <td class="text-light">{{data.totalClearnessFees}}</td>
+                {{#if data.isExportInvoice}}
+                  <td class="text-light">{{data.totalClearnessFees}}</td>
+                {{/if}}
                 <td class="text-light">{{data.totalPriceWithoutVatPerShipment}}</td>
                 {{#unless data.hideVat}}
                   <td class="text-light">{{data.totalVatAmount}}</td>
