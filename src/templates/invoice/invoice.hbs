@@ -40,7 +40,11 @@
           {{/unless}}
         </div>
         <div class="header__middle">
+         {{#if data.isCustomerInvoice}}
             <p>MSI-{{data.Year}}-{{data.invoiceNo}}</p>
+         {{else}}
+            <p>FI-{{data.Year}}-{{data.invoiceNo}}</p>
+         {{/if}}
             <p>{{data.status}}</p>
         </div>
         <div class='header__end'>
@@ -58,7 +62,7 @@
                 <div class="labeled-info__item-value small">{{prettifyDate data.invoiceDate}}</div>
             </div>
             <div class="labeled-info__item">
-                <div class="labeled-info__item-label">Invoice Date / <span class="rtl">تاريخ الفاتورة</span></div>
+                <div class="labeled-info__item-label">Due Date / <span class="rtl">تاريخ الاستحقاق</span></div>
                 <div class="labeled-info__item-value small">{{data.dueDate}}</div>
             </div>
         </div>
@@ -70,10 +74,18 @@
     <section data-template="FIXED" class="section">
         <div class="labeled-info labeled-info--dark labeled-info--gap">
             <div class="labeled-info__item">
-                <div class="labeled-info__item-label">Sold To / <span class="rtl">العميل</span></div>
+             {{#if data.isCustomerInvoice}}
+                 <div class="labeled-info__item-label">Sold To / <span class="rtl">العميل</span></div>
+             {{else}}
+                 <div class="labeled-info__item-label">Seller / <span class="rtl">البائع</span></div>
+             {{/if}}
             </div>
             <div class="labeled-info__item">
-                <div class="labeled-info__item-label">Seller / <span class="rtl">البائع</span></div>
+             {{#if data.isCustomerInvoice}}
+                 <div class="labeled-info__item-label">Seller / <span class="rtl">البائع</span></div>
+             {{else}}
+                 <div class="labeled-info__item-label">Sold To / <span class="rtl">العميل</span></div>
+             {{/if}}
             </div>
         </div>
     </section>
@@ -248,7 +260,7 @@
                     <td>
                         <div>
                             <div>{{toCity}}</div>
-                        </div>
+                    </div>
                     </td>
                     <td>
                         {{#isEqual ../data.customerType 'SERVICE'}}
@@ -367,10 +379,10 @@
         <table class="table table--2-cols table--box" data-template-element="CONTAINER">
             <tbody data-template-element="BODY">
             <tr data-template-element="ROW">
+                {{#unless data.hideVat}}
                 <td>
                     <div>Price &nbsp; <span class="rtl">السعر</span></div>
                 </td>
-                {{#unless data.hideVat}}
                 <td>
                     <div>{{data.totalPriceShipmentsWithAddonsWithoutVat}} SAR</div>
                 </td>
@@ -450,6 +462,7 @@
                 <td>
                     <div>{{data.grandTotal}} SAR</div>
                 </td>
+                {{#if data.isCustomerInvoice}}
                 <td>
                     <div>Bank Info:</div>
                 </td>
@@ -457,6 +470,7 @@
                     <div class="value">BANK AL BILAD</div>
                     <div class="value">SA1315000441130713350008</div>
                 </td>
+                {{/if}}
             </tr>
             </tbody>
         </table>
