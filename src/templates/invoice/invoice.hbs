@@ -94,19 +94,14 @@
         <div class="labeled-info labeled-info--gap">
             <div class="labeled-info__item column">
                 <div class="labeled-info__item-value">
-            <span class="text-ellipsis-2">
-                {{data.customerNameEn}}
+            <span class="text-ellipsis-2 rtl">
+                {{data.customerNameAr}}
             </span>
                 </div>
                 <div class="labeled-info__item-label">
-                    {{#if data.customerId}}
-                        <div>Customer code No. {{data.customerId}}</div>
-                    {{else}}
-                        <div>——</div>
-                    {{/if}}
 
-                    <div class="text-ellipsis-2 rtl">
-                        {{data.customerNameAr}}
+                    <div class="text-ellipsis-2">
+                        {{data.customerNameEn}}
                     </div>
                     <div class="text-ellipsis-2">
                         {{data.customerAddress}}
@@ -124,13 +119,12 @@
             </div>
             <div class="labeled-info__item column">
                 <div class="labeled-info__item-value">
-            <span class="text-elipsis-2">
-                {{data.Name}}
+            <span class="text-elipsis-2 rtl">
+                {{data.NameAr}}
             </span>
-                    <div>&nbsp;</div>
                 </div>
                 <div class="labeled-info__item-label">
-                    <div>——</div>
+                    <div class="text-ellipsis-2">{{data.Name}}</div>
                     <div class="text-ellipsis-2">{{data.Address}}</div>
                     <div class="text-ellipsis">{{data.City}}</div>
                     <div class="text-ellipsis">{{data.Country}}</div>
@@ -228,6 +222,10 @@
                     <div class="rtl">الوحدة</div>
                 </th>
                 <th>
+                    <div>Unit price</div>
+                    <div class="rtl">سعر الوحدة</div>
+                </th>
+                <th>
                     <div>QTY</div>
                     <div class="rtl">الكمية</div>
                 </th>
@@ -271,6 +269,9 @@
                         {{/isEqual}}
                     </td>
                     <td>
+                        {{divide price quantity}}
+                    </td>
+                    <td>
                         <div>
                             <div>{{quantity}}</div>
                         </div>
@@ -291,6 +292,7 @@
                 <td>-</td>
                 <td>-</td>
                 <td>Day</td>
+                <td>{{divide data.totalWaitingCharge data.totalWaitingDays}}</td>
                 <td>{{data.totalWaitingDays}}</td>
                 <td>{{data.totalWaitingCharge}}</td>
             </tr>
@@ -306,6 +308,7 @@
                 <td>-</td>
                 <td>-</td>
                 <td>-</td>
+                <td>{{divide data.totalReturnCharge data.shipmentCounts.totalReturnChargeShipmentCount}}</td>
                 <td>{{data.shipmentCounts.totalReturnChargeShipmentCount}}</td>
                 <td>{{data.totalReturnCharge}}</td>
             </tr>
@@ -321,6 +324,7 @@
                 <td>-</td>
                 <td>-</td>
                 <td>-</td>
+                <td>{{divide data.totalMultiDestination data.shipmentCounts.totalMultiDestinationShipmentCount}}</td>
                 <td>{{data.shipmentCounts.totalMultiDestinationShipmentCount}}</td>
                 <td>{{data.totalMultiDestination}}</td>
             </tr>
@@ -336,6 +340,7 @@
                 <td>-</td>
                 <td>-</td>
                 <td>-</td>
+                <td>{{divide data.totalWeightingFine data.shipmentCounts.totalWeightingFineShipmentCount}}</td>
                 <td>{{data.shipmentCounts.totalWeightingFineShipmentCount}}</td>
                 <td>{{data.totalWeightingFine}}</td>
             </tr>
@@ -351,11 +356,13 @@
                 <td>-</td>
                 <td>-</td>
                 <td>-</td>
+                <td>{{divide data.totalClearnessFees data.shipmentCounts.totalClearnessFeesShipmentCount}}</td>
                 <td>{{data.shipmentCounts.totalClearnessFeesShipmentCount}}</td>
                 <td>{{data.totalClearnessFees}}</td>
             </tr>
             {{/if}}
             <tr data-template-element="ROW" class="bg-dark text-light">
+                <td></td>
                 <td></td>
                 <td></td>
                 <td></td>
