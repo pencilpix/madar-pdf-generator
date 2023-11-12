@@ -206,7 +206,7 @@
                     <div class="rtl">م</div>
                 </th>
                 <th>
-                    <div>Item Description</div>
+                    <div>Description</div>
                     <div class="rtl">وصف السلعة</div>
                 </th>
                 <th>
@@ -233,13 +233,28 @@
                     <div>Price</div>
                     <div class="rtl">السعر</div>
                 </th>
+
+                 <th>
+                    <div>VAT %</div>
+                    <div class="rtl">الضريبة%</div>
+                </th>
+
+                 <th>
+                    <div>VAT</div>
+                    <div class="rtl">الضريبة</div>
+                </th>
+
+                 <th>
+                    <div>Total</div>
+                    <div class="rtl">الإجمالي</div>
+                </th>
             </tr>
             </thead>
             <tbody data-template-element="BODY">
             {{#data.shipmentsSummary}}
                 <tr data-template-element="ROW">
                     <td>
-                        <div>{{add @index 1}}</div>
+                        <div>{{addIndex @index 1}}</div>
                     </td>
                     <td style="text-align: left;">
                         {{#if ../data.customerType}}
@@ -281,10 +296,28 @@
                             <p>{{price}}</p>
                         </div>
                     </td>
+
+                    <td>
+                        <div>
+                            <p>{{../data.vatPercentage}}%</p>
+                        </div>
+                    </td>
+
+                    <td>
+                        <div>
+                            <p>{{multiply price (divide ../data.vatPercentage 100)}}</p>
+                        </div>
+                    </td>
+
+                    <td>
+                        <div>
+                            <p>{{add (multiply price (divide ../data.vatPercentage 100)) price}}</p>
+                        </div>
+                    </td>
                 </tr> {{/data.shipmentsSummary}}
             {{#if data.totalWaitingCharge}}
             <tr data-template-element="ROW">
-                <td>{{add data.shipmentsSummary.length 1}}</td>
+                <td>{{addIndex data.shipmentsSummary.length 1}}</td>
                 <td style="text-align: left;">
                     <div>Waiting Charge</div>
                     <div class="rtl">رسوم الانتظار</div>
@@ -295,12 +328,15 @@
                 <td>{{divide data.totalWaitingCharge data.totalWaitingDays}}</td>
                 <td>{{data.totalWaitingDays}}</td>
                 <td>{{data.totalWaitingCharge}}</td>
+                <td>{{data.vatPercentage}}%</td>
+                <td>{{multiply data.totalWaitingCharge (divide data.vatPercentage 100)}}</td>
+                <td>{{add (multiply data.totalWaitingCharge (divide data.vatPercentage 100)) data.totalWaitingCharge}}</td>
             </tr>
             {{/if}}
 
             {{#if data.totalReturnCharge}}
             <tr data-template-element="ROW">
-                <td>{{add data.shipmentsSummary.length 2}}</td>
+                <td>{{addIndex data.shipmentsSummary.length 2}}</td>
                 <td style="text-align: left;">
                     <div>Return Charge</div>
                     <div class="rtl">رسوم العودة</div>
@@ -311,12 +347,15 @@
                 <td>{{divide data.totalReturnCharge data.shipmentCounts.totalReturnChargeShipmentCount}}</td>
                 <td>{{data.shipmentCounts.totalReturnChargeShipmentCount}}</td>
                 <td>{{data.totalReturnCharge}}</td>
+                <td>{{data.vatPercentage}}%</td>
+                <td>{{multiply data.totalReturnCharge (divide data.vatPercentage 100)}}</td>
+                <td>{{add (multiply data.totalReturnCharge (divide data.vatPercentage 100)) data.totalReturnCharge}}</td>
             </tr>
             {{/if}}
 
             {{#if data.totalMultiDestination}}
             <tr data-template-element="ROW">
-                <td>{{add data.shipmentsSummary.length 3}}</td>
+                <td>{{addIndex data.shipmentsSummary.length 3}}</td>
                 <td style="text-align: left;">
                     <div>Multi Destination</div>
                     <div class="rtl">وجهات متعددة</div>
@@ -327,12 +366,15 @@
                 <td>{{divide data.totalMultiDestination data.shipmentCounts.totalMultiDestinationShipmentCount}}</td>
                 <td>{{data.shipmentCounts.totalMultiDestinationShipmentCount}}</td>
                 <td>{{data.totalMultiDestination}}</td>
+                <td>{{data.vatPercentage}}%</td>
+                <td>{{multiply data.totalMultiDestination (divide data.vatPercentage 100)}}</td>
+                <td>{{add (multiply data.totalMultiDestination (divide data.vatPercentage 100)) data.totalMultiDestination}}</td>
             </tr>
             {{/if}}
 
             {{#if data.totalWeightingFine}}
             <tr data-template-element="ROW">
-                <td>{{add data.shipmentsSummary.length 4}}</td>
+                <td>{{addIndex data.shipmentsSummary.length 4}}</td>
                 <td style="text-align: left;">
                     <div>Weighting Fine</div>
                     <div class="rtl">غرامة الوزن</div>
@@ -343,12 +385,15 @@
                 <td>{{divide data.totalWeightingFine data.shipmentCounts.totalWeightingFineShipmentCount}}</td>
                 <td>{{data.shipmentCounts.totalWeightingFineShipmentCount}}</td>
                 <td>{{data.totalWeightingFine}}</td>
+                <td>{{data.vatPercentage}}%</td>
+                <td>{{multiply data.totalWeightingFine (divide data.vatPercentage 100)}}</td>
+                <td>{{add (multiply data.totalWeightingFine (divide data.vatPercentage 100)) data.totalWeightingFine}}</td>
             </tr>
             {{/if}}
 
             {{#if data.totalClearnessFees}}
             <tr data-template-element="ROW">
-                <td>{{add data.shipmentsSummary.length 5}}</td>
+                <td>{{addIndex data.shipmentsSummary.length 5}}</td>
                 <td style="text-align: left;">
                     <div>Clearance Fees</div>
                     <div class="rtl">رسوم التخليص</div>
@@ -359,6 +404,9 @@
                 <td>{{divide data.totalClearnessFees data.shipmentCounts.totalClearnessFeesShipmentCount}}</td>
                 <td>{{data.shipmentCounts.totalClearnessFeesShipmentCount}}</td>
                 <td>{{data.totalClearnessFees}}</td>
+                <td>{{data.vatPercentage}}%</td>
+                <td>{{multiply data.totalClearnessFees (divide data.vatPercentage 100)}}</td>
+                <td>{{add (multiply data.totalClearnessFees (divide data.vatPercentage 100)) data.totalClearnessFees}}</td>
             </tr>
             {{/if}}
             <tr data-template-element="ROW" class="bg-dark text-light">
@@ -371,6 +419,11 @@
                 <td></td>
                 <td class="text-light">
                     <div>{{data.totalPriceShipmentsWithAddonsWithoutVat}}</div>
+                </td>
+                <td></td>
+                <td></td>
+                <td class="text-light">
+                    <div>{{data.grandTotal}}</div>
                 </td>
             </tr>
             </tbody>
@@ -493,6 +546,7 @@
 
 
 
+    {{#if data.exportWithSummary}}
     <section class="section" data-template="LANDSCAPE_VARIABLE">
         <hr class="separator separator--accent">
         <table data-template-element="CONTAINER" class="table">
@@ -539,7 +593,7 @@
             <tbody data-template-element="BODY">
             {{#data.shipments}}
                 <tr data-template-element="ROW">
-                    <td>{{add @index 1}}</td>
+                    <td>{{addIndex @index 1}}</td>
                     <td>{{id}}</td>
                     <td>{{prettifyDate shipmentCreatedAt}}</td>
                     <td>{{dn}}</td>
@@ -589,6 +643,7 @@
             </tbody>
         </table>
     </section>
+    {{/if}}
 </div>
 
 

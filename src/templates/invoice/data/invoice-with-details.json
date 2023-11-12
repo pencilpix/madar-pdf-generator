@@ -12277,9 +12277,9 @@
       {
         "fromCityId": 247,
         "toCityId": 4,
-        "fromCity": "الدمام، الصناعية",
-        "toCity": "الرياض",
-        "price": 41450,
+        "fromCity": "Dammam, Industrial",
+        "toCity": "Dammam, Industrial",
+        "price": 12688.89,
         "quantity": 32
       },
       {

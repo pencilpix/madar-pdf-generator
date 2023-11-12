@@ -20,16 +20,16 @@
   --font: 'Poppins', sans-serif;
   --font-rtl: 'Tajawal', sans-serif;
 
-  --font-size-xl: calc(1mm * 22 / var(--px-per-mm));
+  --font-size-xl: calc(1mm * 10 / var(--px-per-mm));
   --line-height-xl: calc(1mm * 32 / var(--px-per-mm));
 
-  --font-size-lg: calc(1mm * 16 / var(--px-per-mm));
+  --font-size-lg: calc(1mm * 10 / var(--px-per-mm));
   --line-height-lg: calc(1mm * 24 / var(--px-per-mm));
 
-  --font-size-md: calc(1mm * 14 / var(--px-per-mm));
+  --font-size-md: calc(1mm * 10 / var(--px-per-mm));
   --line-height-md: calc(1mm * 20 / var(--px-per-mm));
 
-  --font-size-sm: calc(1mm * 12 / var(--px-per-mm));
+  --font-size-sm: calc(1mm * 10 / var(--px-per-mm));
   --line-height-sm: calc(1mm * 18 / var(--px-per-mm));
 
   --weight-semibold: 600;

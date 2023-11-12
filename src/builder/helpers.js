@@ -108,6 +108,10 @@ module.exports = (hb) => {
 
   });
 
+  hb.registerHelper('multiply', function (a, b) {
+    return (Number(a) * Number(b)).toFixed(2);
+  });
+
 
   hb.registerHelper('mapRequestAction', (arg1) => {
 
@@ -118,10 +122,16 @@ module.exports = (hb) => {
 
   hb.registerHelper('add', (arg1, arg2) => {
 
-    return arg1 + arg2;
+    return (Number(arg1) + Number(arg2)).toFixed(2);
 
   });
 
+
+  hb.registerHelper('addIndex', (arg1, arg2) => {
+
+    return arg1 +arg2;
+
+  });
 
   hb.registerHelper('findDate', (data, type, requestNumber, timeZone, timeFormat) => {
 
