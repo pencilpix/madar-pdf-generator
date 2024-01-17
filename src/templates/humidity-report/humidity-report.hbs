@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&family=Tajawal&display=swap"
+        rel="stylesheet">
+
+  <title>Humidity Report</title>
+
+  <meta name="test-data" src="./data/humidity-report.json"/>
+
+  <link rel="stylesheet" href="../../css/settings.css"/>
+  <link rel="stylesheet" href="../../css/reset.css"/>
+
+  <link rel="stylesheet" href="../../css/labeled-info.css"/>
+  <link rel="stylesheet" href="../../css/table.css"/>
+
+  <link rel="stylesheet" href="../../css/style.css"/>
+</head>
+<body>
+<!--
+  Templates will be completely removed
+  once calculations over pages & heights is done
+
+  each template have the following data variables:
+  1. template itself has data-template: means it will be added as is no calculations.
+     **~~ Note: element with data-template will be removed from the DOM. ~~**
+
+  2. template child with data-template-child: 'HEADER'|'ROW'|'HEADER'|'BODY'. header, and footer
+     will be repeated if height is bigger than the height of the available space
+     in page. rows will be redistributed to fit the page.
+-->
+
+{{#if data.customerLogo}}
+<div id="page-header">
+    <div class="logo-cover">
+      <img class="logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/01_NUPCO_LOGO_DUAL_RGB-01.png/2560px-01_NUPCO_LOGO_DUAL_RGB-01.png" alt="">
+    </div>
+</div>
+  {{/if}}
+
+
+<div id="templates">
+  <header class="header section" data-template="FIXED">
+    <div class="header__middle" style="margin-left: auto; margin-right: auto;">
+      <p>Temperature and Humidity Logs</p>
+      <p class="rtl">سجل درجة الحرارة و الرطوبة</p>
+    </div>
+    <!--        <div class="header__middle">-->
+    <!--            <p>MSI-{{data.Year}}-{{data.invoiceNo}}</p>-->
+    <!--            <p>{{data.status}}</p>-->
+    <!--        </div>-->
+    <!--        <div class='header__end'>-->
+    <!--            <img alt="QR code" src='https://www.pngmart.com/files/10/Qr-Code-Transparent-PNG.png'/>-->
+    <!--        </div>-->
+  </header>
+
+
+
+  <!-- ===================================================
+  Shipment general info Information
+  =====================================================-->
+
+  <section data-template="FIXED" class="section">
+    <div class="labeled-info labeled-info--gap">
+      <div class="labeled-info__item column">
+        <div class="labeled-info__item-label">
+          <div><span dir="ltr">Shipment No. / <span class="rtl">رقم الشحنة</span>:</span> <b>{{data.shipment.shipmentId}}</b></div>
+          <div><span dir="ltr">Shipment Date / <span class="rtl">تاريخ الشحنة</span>:</span> <b>{{prettifyDate data.shipment.createdAt}}</b></div>
+          <div><span dir="ltr">Client / <span class="rtl">العميل</span>:</span> <b>{{data.shipment.dropOffCustomerName}}</b></div>
+        </div>
+      </div>
+      <div class="labeled-info__item column">
+        <div class="labeled-info__item-label">
+          <div><span dir="ltr">Sender / <span class="rtl">المرسل</span>:</span> <b>{{data.shipment.customerName}}</b></div>
+          <div><span dir="ltr">Driver Name / <span class="rtl">اسم السائق</span>:</span> <b>{{data.shipment.driverId}}</b></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" data-template="VARIABLE">
+    <hr class="separator separator--accent">
+    <table data-template-element="CONTAINER" class="table">
+      <thead data-template-element="HEADER">
+      <tr>
+        <th>#</th>
+        <th>Date</th>
+        <th>Time</th>
+        <th>Temperature</th>
+        <th>Humidity</th>
+        <th>location</th>
+      </tr>
+      </thead>
+      <tbody data-template-element="BODY">
+      {{#data.positions}}
+        <tr data-template-element="ROW">
+          <td>{{add @index 1}}</td>
+          <td>{{prettifyDate date}}</td>
+          <td>{{prettifyTime date}}</td>
+          <td>{{prettifyNumber temperature}}</td>
+
+          <td>{{prettifyNumber humidity}}</td>
+          <td><a href="https://www.google.com/maps/search/?api=1&query={{latitude}},{{longitude}}" target="_blank">{{latitude}},{{longitude}}</a></td>
+        </tr>
+      {{/data.positions}}
+      </tbody>
+    </table>
+  </section>
+</div>
+
+
+<script src="../../js/logger.js"></script>
+<script src="../../js/enums.js"></script>
+<script src="../../js/template.js"></script>
+<script src="../../js/main.js"></script>
+</body>
+</html>

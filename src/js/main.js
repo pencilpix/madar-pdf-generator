@@ -3,6 +3,7 @@
 
   class App {
     wrapper;
+    pageHeader;
     pxPerMm = 96 / 25.4;
     pageHeight = 297 * this.pxPerMm; // A4 height 297mm
     pageWidth = 210 * this.pxPerMm; // A4 width 210mm
@@ -20,6 +21,7 @@
 
     constructor() {
       this.wrapper = this.createElement('div', {id: 'page-wrapper'}, []);
+      this.pageHeader = document.getElementById('page-header');
       document.body.prepend(this.wrapper);
     }
 
@@ -55,7 +57,10 @@
      */
     createPage(isLandscape = false) {
       const pageContent = this.createElement('div', {class: 'page__content'}, []);
-      const page = this.createElement('div', {class: isLandscape ? 'page page--landscape' : 'page'}, [pageContent]);
+      const headerInnerHtml = (this.pageHeader || this.createElement('div', {class: 'page__header'}, [])).innerHTML;
+      const pageHeader = this.createElement('div', {class: 'page__header'}, []);
+      pageHeader.innerHTML = headerInnerHtml;
+      const page = this.createElement('div', {class: isLandscape ? 'page page--landscape' : 'page'}, [pageHeader, pageContent]);
 
       pageContent.dataset.landscape = isLandscape? '1' : '0';
 

@@ -34,6 +34,13 @@
   /*page-break-after: always;*/
 }
 
+.page__header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
 .page--landscape {
   background-image: var(--page-landscape-bg-url);
   position: relative;
@@ -177,4 +184,25 @@
 
 .separator--accent {
   border-color: var(--border-accent-color);
+}
+
+.logo-cover {
+  background-color: white;
+  position: absolute;
+  top: 12.5mm;
+  left: 8.5mm;
+  width: 59.5mm;
+  height: 10mm;
+  text-align: center;
+}
+
+.logo-cover .logo {
+  max-width: 90%;
+  max-height: 18mm;
+  height: auto;
+  width: auto;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
