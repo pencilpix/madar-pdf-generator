@@ -68,15 +68,15 @@
     <div class="labeled-info labeled-info--gap">
       <div class="labeled-info__item column">
         <div class="labeled-info__item-label">
-          <div><span dir="ltr">Shipment No. / <span class="rtl">رقم الشحنة</span>:</span> <b>{{data.shipment.shipmentId}}</b></div>
-          <div><span dir="ltr">Shipment Date / <span class="rtl">تاريخ الشحنة</span>:</span> <b>{{prettifyDate data.shipment.createdAt}}</b></div>
-          <div><span dir="ltr">Client / <span class="rtl">العميل</span>:</span> <b>{{data.shipment.dropOffCustomerName}}</b></div>
+          <div><span dir="ltr">Shipment No. / <span class="rtl">رقم الشحنة</span>:</span> <b>{{data.shipmentId}}</b></div>
+          <div><span dir="ltr">Shipment Date / <span class="rtl">تاريخ الشحنة</span>:</span> <b>{{prettifyDate data.createdAt}}</b></div>
+          <div><span dir="ltr">Client / <span class="rtl">العميل</span>:</span> <b>{{data.dropOffCustomerName}}</b></div>
         </div>
       </div>
       <div class="labeled-info__item column">
         <div class="labeled-info__item-label">
-          <div><span dir="ltr">Sender / <span class="rtl">المرسل</span>:</span> <b>{{data.shipment.customerName}}</b></div>
-          <div><span dir="ltr">Driver Name / <span class="rtl">اسم السائق</span>:</span> <b>{{data.shipment.driverId}}</b></div>
+          <div><span dir="ltr">Sender / <span class="rtl">المرسل</span>:</span> <b>{{data.customerName}}</b></div>
+          <div><span dir="ltr">Driver Name / <span class="rtl">اسم السائق</span>:</span> <b>{{data.driverName}}</b></div>
         </div>
       </div>
     </div>
