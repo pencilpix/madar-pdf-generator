@@ -189,4 +189,8 @@ module.exports = (hb) => {
   hb.registerHelper('json', function(context) {
     return JSON.stringify(context);
   });
+  hb.registerHelper("prettifyNumber", (num, fraction) => {
+
+    return (num || 0).toFixed(fraction || 0);
+  });
 }
