@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&family=Tajawal&display=swap"
+        rel="stylesheet">
+
+  <title>order pod</title>
+
+  <meta name="test-data" src="./data/order-pod.json"/>
+
+  <link rel="stylesheet" href="../../css/settings.css"/>
+  <link rel="stylesheet" href="../../css/reset.css"/>
+
+  <link rel="stylesheet" href="../../css/labeled-info.css"/>
+  <link rel="stylesheet" href="../../css/table.css"/>
+
+  <link rel="stylesheet" href="../../css/style.css"/>
+</head>
+<body class="background-with-signature">
+<!--
+  Templates will be completely removed
+  once calculations over pages & heights is done
+  each template have the following data variables:
+  1. template itself has data-template: means it will be added as is no calculations.
+     **~~ Note: element with data-template will be removed from the DOM. ~~**
+  2. template child with data-template-child: 'HEADER'|'ROW'|'HEADER'|'BODY'. header, and footer
+     will be repeated if height is bigger than the height of the available space
+     in page. rows will be redistributed to fit the page.
+-->
+{{#if data.customerLogo}}
+  <div id="page-header">
+    <div class="logo-cover">
+      <img class="logo" src="{{data.customerLogo}}" alt="" style="max-width: 200px;">
+    </div>
+  </div>
+{{/if}}
+<div id="templates">
+  <header class="header section" data-template="FIXED">
+    <div class="header__middle" style="margin-left: auto; margin-right: auto;">
+      <p>Goods Delivery Note</p>
+      <p class="rtl">مذكرة تسليم البضائع</p>
+    </div>
+    <!--        <div class="header__middle">-->
+    <!--            <p>MSI-{{data.Year}}-{{data.invoiceNo}}</p>-->
+    <!--            <p>{{data.status}}</p>-->
+    <!--        </div>-->
+    <!--        <div class='header__end'>-->
+    <!--            <img alt="QR code" src='https://www.pngmart.com/files/10/Qr-Code-Transparent-PNG.png'/>-->
+    <!--        </div>-->
+  </header>
+  <!-- ===================================================
+  Shipment general info Information
+  =====================================================-->
+  <section data-template="FIXED" class="section">
+    <div class="labeled-info labeled-info--gap">
+      <div class="labeled-info__item column">
+        <div class="labeled-info__item-label">
+          <div><span dir="ltr">Shipment No. / <span class="rtl">رقم الشحنة</span>:</span> <b>{{data.shipmentId}}</b></div>
+          <div><span dir="ltr">Shipment Date / <span class="rtl">تاريخ الشحنة</span>:</span> <b>{{prettifyDate data.shipmentDate}}</b></div>
+          <div><span dir="ltr">Order Number :</span> <b>{{data.order.reference}}</b></div>
+          <div><span dir="ltr">Driver Name / <span class="rtl">اسم السائق</span>:</span> <b>{{data.driverName}}</b></div>
+          <div><span dir="ltr">Sender / <span class="rtl">المرسل</span>:</span> <b>{{data.sender}}</b></div>
+          <div><span dir="ltr">Delivery Time / <span class="rtl">وقت التسليم</span>:</span> <b>{{prettifyDate data.deliveryTime}}</b></div>
+        </div>
+      </div>
+      <div class="labeled-info__item column">
+        <div class="labeled-info__item-label">
+          <div><span dir="ltr">Temp Type :</span> <b>{{data.order.temperatureControl}}</b></div>
+          {{!-- add client value if all items have the same one  --}}
+          <div><span dir="ltr">Client </span>:</span>
+            {{#if data.isSameClient}}
+              <b>{{#with data.items.[0]}} {{itemAddons.client}} {{/with}}</b>
+              </b> {{else}}<b>-</b>
+            {{/if}}
+          </div>
+
+          {{!-- add customerItemCode value if all items have the same one  --}}
+          <div><span dir="ltr">Customer Order Number</span>:</span>
+            {{#if data.isSameCustomerItemCode}}
+              <b>{{#with data.items.[0]}} {{itemAddons.customerItemCode}} {{/with}}</b>
+              </b> {{else}}<b>-</b>
+            {{/if}}
+          </div>
+
+          {{!-- add itemFamilyGroup value if all items have the same one  --}}
+          <div><span dir="ltr">Item Family Group</span>:</span>
+            {{#if data.isSameItemFamilyGroup}}
+              <b>{{#with data.items.[0]}} {{itemAddons.itemFamilyGroup}} {{/with}}</b>
+              </b> {{else}}<b>-</b>
+            {{/if}}
+          </div>
+          <div><span dir="ltr">Customer Name</span>:</span> <b>{{data.order.customer.contactFirstName}} {{data.order.customer.contactLastName}}</b></div>
+          <div><span dir="ltr">Location</span>:</span> <b><a href="https://www.google.com/maps/search/?api=1&query={{data.deliveryLat}},{{data.deliveryLong}}" target="_blank">{{data.deliveryLat}},{{data.deliveryLong}}</a></b></div>
+        </div>
+      </div>
+    </div>
+  </section>
+  {{#unless data.items}}
+    <section data-template="FIXED" class="section" style="text-align: center;">
+      <div>
+        <div colspan="10">No items found</div>
+      </div>
+    </section>
+  {{/unless}}
+
+
+  {{#if data.items.length}}
+
+    <section class="section" data-template="VARIABLE">
+      <hr class="separator separator--accent">
+      <table data-template-element="CONTAINER" class="table">
+        <thead data-template-element="HEADER">
+        <tr>
+          <th>#</th>
+          <th>Nupco Item Code</th>
+          <th>Description</th>
+          <th>Code</th>
+          <th>Batch</th>
+          <th>Quantity</th>
+          <th>UoM</th>
+          <th>Customer Item Code</th>
+          {{#unless data.isSameClient}} <th>Client</th> {{/unless}}
+          {{#unless data.isSameItemFamilyGroup}} <th>Item Family Group</th> {{/unless}}
+          <th>Expiry Date</th>
+        </tr>
+        </thead>
+        <tbody data-template-element="BODY">
+        {{#data.items}}
+          <tr data-template-element="ROW">
+            <td>{{addIndex @index 1}}</td>
+            <td>{{genericNumber}}</td>
+            <td>{{itemDescription}}</td>
+            <td>{{itemAddons.tradeCode}}</td>
+            <td>{{batch}}</td>
+            <td>{{acceptedQuantity}}</td>
+            <td>{{itemAddons.uom}}</td>
+            <td>{{itemAddons.customerItemCode}}</td>
+            {{#unless ../data.isSameClient}} <td>{{itemAddons.client}}</td> {{/unless}}
+            {{#unless ../data.isSameItemFamilyGroup}} <td>{{itemAddons.itemFamilyGroup}}</td> {{/unless}}
+            <td>{{prettifyDate expirationDate}}</td>
+          </tr>
+        {{/data.items}}
+        </tbody>
+      </table>
+    </section>
+  {{/if}}
+</div>
+<script src="../../js/logger.js"></script>
+<script src="../../js/enums.js"></script>
+<script src="../../js/template.js"></script>
+<script src="../../js/main.js"></script>
+</body>

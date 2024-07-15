@@ -183,4 +183,9 @@ module.exports = (hb) => {
 
     return (num || 0).toFixed(fraction || 0);
   });
+
+  hb.registerHelper('addIndex', (arg1, arg2) => {
+    return arg1 +arg2;
+  });
+
 }

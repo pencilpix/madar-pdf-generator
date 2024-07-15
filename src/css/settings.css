@@ -46,3 +46,7 @@
   --text-darkest-color: var(--darkest-color);
   --text-lightest-color: var(--lightest-color);
 }
+
+.background-with-signature {
+  --page-bg-url: url('https://madarv2devstorage.blob.core.windows.net/madar/images/1707226044470-pod-template-ui.png');
+}

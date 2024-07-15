@@ -17,7 +17,7 @@ module.exports = {
       .join('\n  ');
 
     template = template.replace(/<\/head>/, `${styles}\n  </head>`);
-    template = template.replace(/<\/body>/, `${scripts}\n  </body>`);
+    template = template.replace(/<\/body>/, `${scripts}</body>`);
     return template;
   },
 

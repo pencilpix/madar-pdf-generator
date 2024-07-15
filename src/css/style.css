@@ -18,6 +18,9 @@
   overflow: hidden;
 }
 
+#page-wrapper.page-wrapper--ready, .page-wrapper--ready + #templates { margin-bottom: -20px; overflow: hidden; }
+
+
 
 /**********************************************************/
 /* PAGE GENERAL STYLES                                    */
@@ -26,11 +29,11 @@
   height: var(--page-height);
   width: var(--page-width);
   background-image: var(--page-bg-url);
-  background-size: cover;
+  background-size: 100% calc(100% - 2px);
   position: relative;
   overflow: hidden;
 
-  /*page-break-inside: avoid;*/
+  page-break-inside: avoid;
   /*page-break-after: always;*/
 }
 
@@ -65,9 +68,9 @@
   transform-origin: center center;
   transform: translate3d(-50%, -50%, 0) rotate(-90deg) !important;
 }
-
-.page-wrapper--ready #templates {
-  display: none;
+.page-wrapper--ready #templates,
+.page-wrapper--ready + #templates {
+  display: none !important;
 }
 
 .table-list,

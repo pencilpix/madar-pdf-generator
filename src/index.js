@@ -51,8 +51,10 @@ if (isPreview) {
 
 
     // 210mm x 297mm
-    await page.setViewport({width: Math.floor(210 * 96/25.4), height: Math.floor(297 * 96/25.4)});
-    const content = await page.setContent(html, {waitUntil: 'networkidle0'});
+    const width = Math.floor(210 * 96/25.4);
+    const height = Math.floor(297 * 96/25.4);
+    await page.setViewport({width, height });
+    const content = await page.setContent(html, {waitUntil: 'domcontentloaded'});
     await page.waitForSelector('.page-wrapper--ready', {timeout: 10000});
     if (isPreview) {
       console.log(`====== Generate PDF Preview for: ${templateConfig.name}/${templateConfig.fileName} Started`);
@@ -65,6 +67,7 @@ if (isPreview) {
         return await page.pdf({
           path: path.resolve(itemPreviewDir, `${templateConfig.fileName.split(/\.\w+$/)[0]}.pdf`),
           format: 'a4',
+          height: height + 20,
           printBackground: true,
           landscape: false,
           preferCSSPageSize: true,
